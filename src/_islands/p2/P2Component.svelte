@@ -16,7 +16,7 @@
   </style>
   
   <h1>Hello {name}</h1>
-  {JSON.stringify(json)}
+  <pre>{JSON.stringify(json,null,4)}</pre>
   
   <button on:click={handleClick}>
       Clicked {count} {count === 1 ? 'time' : 'times'}
