@@ -1,9 +1,9 @@
 <script>
-    import { cname } from '../../_componentScripts/component_script.js';
     import Component2 from '../Component2.svelte';
     // using export to allow overrides via props
+
+    export let json = {}
     export let name = 'p2 Name here';
-    name = cname;
     let count = 0;
   
     function handleClick() {
@@ -16,6 +16,7 @@
   </style>
   
   <h1>Hello {name}</h1>
+  {JSON.stringify(json)}
   
   <button on:click={handleClick}>
       Clicked {count} {count === 1 ? 'time' : 'times'}

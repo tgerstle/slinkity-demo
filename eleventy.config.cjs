@@ -24,6 +24,13 @@ module.exports = function (eleventyConfig) {
     return JSON.stringify(value, null, spaces);
   })
 
+  //https://www.11ty.dev/docs/dev-server/
+  eleventyConfig.setServerOptions({
+    // Default values are shown:
+
+    // Whether the live reload snippet is used
+    liveReload: false,
+  });
   return {
     dir: {
       /**

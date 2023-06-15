@@ -10,9 +10,14 @@ module.exports = {
     data: {
         layout: 'blank.njk',
         pagination: {
-            data: collections.categories,
+            data: mycategories,
             size: 1,
             alias: category
+        },
+        mycategories: {
+            eleventyImport: {
+                collections: ["post"]
+            }
         },
         permalink: `collections/${category.slug}.json`
     },
@@ -20,5 +25,7 @@ module.exports = {
         return JSON.stringify(data.category);
     }
 }
+//https://www.11ty.dev/docs/data-configuration/#advanced
+//https://www.11ty.dev/docs/collections/#declare-your-collections-for-incremental-builds
 //https://www.11ty.dev/docs/collections/
 //collections-json.11ty.cjs

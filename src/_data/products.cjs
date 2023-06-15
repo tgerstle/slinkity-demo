@@ -5,6 +5,7 @@ const { customAttributeMetadataQuery } = require('../../lib/data/gql/queries/pag
 const { stripString } = require('../../lib/utilities/_stripString.cjs');
 const { standardizeValue } = require('../../lib/utilities/_standardizeValue.cjs');
 const { createFiltersFromAggregations, createProductsFromMagProducts } = require('../../lib/collections/route/collectionsProcessing.cjs');
+const { updateProduct } = require('../../lib/collections/component/_product.cjs');
 
 async function getProductList(helpers, settings) {
     console.log('in getProductList');
@@ -301,7 +302,7 @@ async function getProductList(helpers, settings) {
 }
 
 
-function processProducts(pageArr, aggregations) {
+function processProducts(pageArr, aggregations, settings) {
 
     let prepProds = pageArr.map((p) => {
         return p.magData;
@@ -355,8 +356,63 @@ function processProducts(pageArr, aggregations) {
                 return typeof ym != 'string';
             })
         }
+
+        // 'stone_type' : ['nexus_diamond_alternative']
+        p.product.defaultSelections = {
+            metal_type: ['14k_white_gold', '18k_white_gold', '10k_white_gold', 'platinum', 'silver', 'sterling_silver', '14k_white_yellow_gold'],
+        };
+        if (settings.siteId == 'tf') {
+            p.product.defaultSelections = {
+                metal_type: ['14k_white_gold', '18k_white_gold', '10k_white_gold'],
+                carat_weight_configurable: ['1_8_tcw', '1_4_tcw', '1_3_tcw', '1_2_tcw', '2_3_tcw', '3_4_tcw', '1_tcw'],
+            }
+        }
+
+        // //set the default selections onto the main product
+        // //then trigger the product configurations with updateProduct
+        // if (typeof prefilters != 'undefined') {
+        //     for (const prop in prefilters) {
+        //         if (prefilters[prop].length > 0) {
+        //             if (
+        //                 typeof p.defaultSelections != 'undefined' &&
+        //                 typeof p.defaultSelections[prop] != 'undefined'
+        //             ) {
+        //                 p.defaultSelections[prop].unshift(prefilters[prop]);
+        //             } else {
+        //                 p.defaultSelections[prop] = prefilters[prop]
+        //             }
+        //         }
+        //     }
+        // }
+
+        // //this is prefiltering from a supplied post object, so far
+        // //this is only used to configure the setting on the builder preview page
+        // let prefiltersFromPO;
+        // if (product.type == 'main' && typeof request.postObject != 'undefined' && request.postObject) {
+        //     prefiltersFromPO = getPrefiltersFromPO(product.product, request.postObject);
+        // }
+
+        // if (typeof prefiltersFromPO != 'undefined' && product.type == 'main') {
+        //     for (const prop in prefiltersFromPO) {
+        //         if (prefiltersFromPO[prop].length > 0) {
+        //             if (
+        //                 typeof product.product.defaultSelections != 'undefined' &&
+        //                 typeof product.product.defaultSelections[prop] != 'undefined'
+        //             ) {
+        //                 product.product.defaultSelections[prop].unshift(prefiltersFromPO[prop]);
+        //             } else {
+        //                 product.product.defaultSelections[prop] = prefiltersFromPO[prop]
+        //             }
+        //         }
+        //     }
+        // }
+        let allActiveFilters = []; //added ...??
+        let processed = updateProduct(p.product, allActiveFilters, true);
+        p.product = processed.product;
+        p.product.allActiveFilters = processed.allActiveFilters; //??necessary now -- legacyish
+
         return p;
-    })
+    });
     return pageArr;
 }
 
@@ -366,7 +422,7 @@ module.exports = async function () {
         graphqlQuery
     }
     let { pageArr, typenamemap, aggregations } = await getProductList(helpers, settings);
-    pageArr = processProducts(pageArr, aggregations);
+    pageArr = processProducts(pageArr, aggregations, settings);
     console.log('products pageArr.length', pageArr.length);
     // console.log('products pageArr', pageArr);
 

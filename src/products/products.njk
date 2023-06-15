@@ -7,3 +7,8 @@ permalink: "products/{{ product.slug }}/"
 ---
 <h1>Product</h1>
 {{ product.slug }}
+
+{% island 'p2/P2Component.svelte', 'client:load' %}
+{% prop 'json', product %}
+{% prop 'name', product.slug %}
+{% endisland %}
