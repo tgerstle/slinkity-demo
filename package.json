@@ -1,0 +1,21 @@
+{
+  "name": "my-slinkity-site",
+  "version": "1.0.0",
+  "description": "A splendid starter for my Slinkity site!",
+  "main": "eleventy.config.js",
+  "type": "module",
+
+  "scripts": {
+    "dev": "eleventy --serve --incremental --quiet",
+    "start": "eleventy --serve --incremental --quiet",
+    "build": "eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.0-canary.25",
+    "@11ty/eleventy-fetch": "^4.0.0",
+    "@slinkity/svelte": "^1.0.0",
+    "dotenv": "^16.1.4",
+    "sass": "^1.57.1",
+    "slinkity": "^1.0.0-canary.0"
+  }
+}
