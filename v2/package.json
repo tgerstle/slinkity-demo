@@ -1,0 +1,21 @@
+{
+  "name": "11ty2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "eleventy --serve --incremental --quiet",
+    "start": "eleventy --serve --incremental --quiet",
+    "build": "eleventy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-fetch": "^4.0.0",
+    "@slinkity/svelte": "^1.0.0",
+    "dotenv": "^16.3.1",
+    "slinkity": "^1.0.0-canary.0"
+  }
+}
